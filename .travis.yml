@@ -1,0 +1,22 @@
+language: node_js
+node_js:
+  - "5"
+  - "5.1"
+  - "4"
+  - "4.2"
+  - "4.1"
+  - "4.0"
+  - "0.12"
+  - "0.11"
+  - "iojs"
+
+install:
+  - npm install typings -g
+  - npm install tape
+  - npm install rimraf
+  - npm install tap-diff
+  - npm install ts-node
+  - npm install tslint
+  - npm install typescript  
+  - typings install
+    

@@ -1,0 +1,44 @@
+{
+  "name": "tap-to-html",
+  "version": "0.0.1",
+  "description": "A Test-Anything-Protocol (tap) stream transformer to html",
+  "main": "dist/index.js",
+  "typings": "dist/index",
+  "files": [
+    "dist/"
+  ],
+  "scripts": {
+    "lint": "tslint src/**/*.ts",
+    "build": "rimraf dist/ && tsc",
+    "test-spec": "ts-node node_modules/tape/bin/tape \"src/**/*.spec.ts\"",
+    "test": "npm run lint && npm run build && npm run test-spec",
+    "prepublish": "npm run lint && npm run build && rimraf dist/**/*.spec.* "
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Quobject/tap-to-html.git"
+  },
+  "keywords": [
+    "tap",
+    "tape",
+    "html",
+    "stream"
+  ],
+  "author": "Matthias Ludwig <mludwig@quobject.io>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Quobject/tap-to-html/issues"
+  },
+  "homepage": "https://github.com/Quobject/tap-to-html",
+  "devDependencies": {
+    "rimraf": "^2.5.2",
+    "tape": "^4.6.0",
+    "ts-node": "^0.7.3",
+    "tslint": "^3.10.2",
+    "typescript": "^1.8.10"
+  },
+  "dependencies": {
+    "core-js": "^2.4.0",
+    "through2": "^2.0.1"
+  }
+}
