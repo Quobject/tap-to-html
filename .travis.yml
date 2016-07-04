@@ -18,5 +18,6 @@ install:
   - npm install ts-node
   - npm install tslint
   - npm install typescript  
+  - npm install through2
   - typings install
     
