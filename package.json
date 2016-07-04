@@ -1,6 +1,6 @@
 {
   "name": "tap-to-html",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A Test-Anything-Protocol (tap) stream transformer to html",
   "main": "dist/index.js",
   "typings": "dist/index",
@@ -31,6 +31,7 @@
   },
   "homepage": "https://github.com/Quobject/tap-to-html",
   "devDependencies": {
+    "blue-tape": "^0.2.0",
     "rimraf": "^2.5.2",
     "tape": "^4.6.0",
     "ts-node": "^0.7.3",
@@ -38,7 +39,6 @@
     "typescript": "^1.8.10"
   },
   "dependencies": {
-    "core-js": "^2.4.0",
     "through2": "^2.0.1"
   }
 }

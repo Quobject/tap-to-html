@@ -33,3 +33,4 @@ my_config.json
 npm-debug.log
 dist
 typings
+tap.html

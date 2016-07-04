@@ -1,5 +1,7 @@
 /* tslint:disable:no-shadowed-variable */
+/* tslint:disable:no-unused-variable */
 import * as stream from 'stream';
+import * as fs from 'fs';
 import test = require('blue-tape');
 import { TapToHtml } from './index';
 
@@ -30,29 +32,49 @@ ok 64 securityGroupId
 # ok
 `;
 
-//const testString2 = `
-//TAP version 13
-//# testling.core.ebs_options.ts
-//# constructor
-//ok 57 machineName
-//ok 62 ebsVolumeType
-//# testling.core.quhnb_docker.ts
-//# constructor
-//# testling.core.vpc_options.ts
-//# constructor
-//not ok 63 vpcId
-//  ---
-//    operator: equal
-//    expected: 'vpc id2'
-//    actual:   'vpc id'
-//  ...
-//ok 64 securityGroupId
+const testString2 = `
+TAP version 13
+# testling.core.ebs_options.ts
+# constructor
+ok 57 machineName
+ok 62 ebsVolumeType
+# testling.core.quhnb_docker.ts
+# constructor
+# testling.core.vpc_options.ts
+# constructor
+not ok 63 vpcId
+  ---
+    operator: equal
+    expected: 'vpc id2'
+    actual:   'vpc id'
+  ...
+ok 64 securityGroupId
 
-//1..64
-//# tests 64
-//# pass  63
-//# fail  1
-//`;
+1..64
+# tests 64
+# pass  63
+# fail  1
+`;
+
+//test('tapToHtml to file', t => {
+//  const s = new stream.Readable();
+//  s.push(testString);
+//  s.push(null);
+
+//  const w = fs.createWriteStream('C:/tools/lint/tap.html');
+
+//  const tapToHtml = new TapToHtml();
+
+//  const teststream = tapToHtml.stream();
+//  s.pipe(teststream).pipe(w);
+
+//  w.on('finish', function () {
+//    //console.log('writing finished');
+//    t.ok(teststream, 'teststream');
+//    t.end();
+//  });
+//});
+
 
 test('tapToHtml', t => {
   const s = new stream.Readable();
@@ -75,6 +97,7 @@ test('tapToHtml', t => {
   w.on('finish', function () {
     console.log('resultString = ' + resultString);
     t.ok(teststream, 'teststream');
+    t.ok(resultString, 'resultString');
     t.end();
   });
 });
