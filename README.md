@@ -7,7 +7,6 @@ A Test-Anything-Protocol (tap) stream transformer to html
 [![NPM version][npm-image]][npm-url]
 [![NPM downloads][downloads-image]][downloads-url]
 [![Build status][travis-image]][travis-url]
-[![Gitter][gitter-image]][gitter-url]
 
 ## Installation
 
@@ -339,5 +338,3 @@ MIT
 [downloads-url]: https://npmjs.org/package/tap-to-html
 [travis-image]: https://api.travis-ci.org/Quobject/tap-to-html.svg
 [travis-url]: https://travis-ci.org/Quobject/tap-to-html/
-[gitter-image]: https://badges.gitter.im/Quobject/tap-to-html.svg
-[gitter-url]: https://gitter.im/Quobject/tap-to-html?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge
