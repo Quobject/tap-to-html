@@ -2,6 +2,7 @@
 import * as through from 'through2';
 
 let result = [];
+let options2;
 
 const transform = function (chunk, encoding, callback) {
 
@@ -27,10 +28,14 @@ const flush = function (callback) {
 
   console.log('flush content = ', content);
 
-  this.push(content.join('\n'));
+  let totalHtml = options2.html.replace('@content@', content.join('\n'));
+
+  this.push(totalHtml);
   callback();
 
 };
+
+
 
 
 export class TapToHtml {
@@ -39,6 +44,7 @@ export class TapToHtml {
 
   public stream() {
     console.log('start TapToHtml stream');
+    options2 = this.options;
     return through.obj(transform, flush);
   }
 
