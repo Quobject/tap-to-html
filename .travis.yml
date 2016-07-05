@@ -10,6 +10,14 @@ node_js:
 
 install:
   - npm install typings -g
-  - npm install
+  - npm install tape
+  - npm install blue-tape
+  - npm install rimraf
+  - npm install tap-diff
+  - npm install ts-node
+  - npm install tslint
+  - npm install typescript  
+  - npm install through2
   - typings install
+    
     
