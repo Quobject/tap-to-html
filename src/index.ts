@@ -31,6 +31,7 @@ export class TapToHtml {
       let numberTests = 0;
       let numberPass = 0;
       let numberFail = 0;
+      let outsideTitle = true;
 
       const resetYaml = function () {
         if (inYaml) {
@@ -58,34 +59,38 @@ export class TapToHtml {
         } else if (line.startsWith('ok')) {
           html = `<p class="ok">${line}</p>`;
           resetYaml();
-          title = '';
+          outsideTitle = true;
         } else if (line.startsWith('TAP version')) {
           resetYaml();
-          title = '';
+          outsideTitle = true;
         } else if (line.startsWith('# tests')) {
           html = `<p>${line}</p>`;
           numberTests = parseInt(line.substring(7), 10);
           resetYaml();
-          title = '';
+          outsideTitle = true;
         } else if (line.startsWith('# pass')) {
           html = `<p>${line}</p>`;
           numberPass = parseInt(line.substring(6), 10);
           resetYaml();
-          title = '';
+          outsideTitle = true;
         } else if (line.startsWith('# fail')) {
           html = `<p>${line}</p>`;
           numberFail = parseInt(line.substring(6), 10);
           resetYaml();
-          title = '';
+          outsideTitle = true;
         } else if (line.startsWith('#')) {
-          title = title + `${line}`;
           html = `<p>${line}</p>`;
           resetYaml();
+          if (outsideTitle) {
+            title = '';
+          }
+          title = title + `${line}`;
+          outsideTitle = false;
         } else if (line.startsWith('not ok')) {
           bodyclass = 'errorbody';
           yamlTitle = `<p class="error">${title}</p><p class="error">${line}</p>`;
           inYaml = true;
-          title = '';
+          outsideTitle = true;
         } else if (inYaml) {
           yaml.push(line);
         }
@@ -250,6 +255,7 @@ export class TapToVSError {
       let title = '';
       let yaml = [];
       let inYaml = false;
+      let outsideTitle = true;
 
       const resetYaml = function () {
         //console.log('title = ', title);
@@ -272,7 +278,6 @@ export class TapToVSError {
 
           ];
           content.push(msg.join(''));
-          title = '';
         }
 
         inYaml = false;
@@ -289,16 +294,22 @@ export class TapToVSError {
           //do nothing
         } else if (line.startsWith('ok')) {
           resetYaml();
-          title = '';
+          outsideTitle = true;
         } else if (line.startsWith('TAP version')) {
           resetYaml();
           title = '';
+          outsideTitle = true;
         } else if (line.startsWith('#')) {
           resetYaml();
+          if (outsideTitle) {
+            title = '';
+          }
           title = title + `${line}`;
+          outsideTitle = false;
         } else if (line.startsWith('not ok')) {
           yamlTitle = line;
           inYaml = true;
+          outsideTitle = true;
         } else if (inYaml) {
           yaml.push(line);
         }
