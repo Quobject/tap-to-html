@@ -294,8 +294,8 @@ export class TapToVSError {
           resetYaml();
           title = '';
         } else if (line.startsWith('#')) {
-          title = title + `${line}`;
           resetYaml();
+          title = title + `${line}`;
         } else if (line.startsWith('not ok')) {
           yamlTitle = line;
           inYaml = true;

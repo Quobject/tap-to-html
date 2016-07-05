@@ -46,6 +46,8 @@ not ok 63 vpcId
     expected: 'vpc id2'
     actual:   'vpc id'
   ...
+# testling.core.ebs_options.ts
+# constructor
 ok 64 securityGroupId
 
 1..64
