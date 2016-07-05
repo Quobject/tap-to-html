@@ -54,9 +54,7 @@ export class TapToHtml {
 
         html = null;
         if (line.length === 0) {
-          html = `<br>`;
-          resetYaml();
-          title = '';
+          //do nothing
         } else if (line.startsWith('ok')) {
           html = `<p class="ok">${line}</p>`;
           resetYaml();
