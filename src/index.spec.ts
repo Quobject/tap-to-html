@@ -3,7 +3,7 @@
 import * as stream from 'stream';
 import * as fs from 'fs';
 import test = require('blue-tape');
-import { TapToHtml } from './index';
+import { TapToHtml, Options, TapToVSError } from './index';
 
 const testString = `
 TAP version 13
@@ -38,9 +38,7 @@ TAP version 13
 # constructor
 ok 57 machineName
 ok 62 ebsVolumeType
-# testling.core.quhnb_docker.ts
-# constructor
-# testling.core.vpc_options.ts
+# quhnbfleetmake/src/core/vpc_options.spec.ts
 # constructor
 not ok 63 vpcId
   ---
@@ -96,6 +94,35 @@ test('tapToHtml', t => {
 
   w.on('finish', function () {
     console.log('resultString = ' + resultString);
+    t.ok(teststream, 'teststream');
+    t.ok(resultString, 'resultString');
+    t.end();
+  });
+});
+
+
+
+test('tapToVSError', t => {
+  const s = new stream.Readable();
+  s.push(testString2);
+  s.push(null);
+
+  const w = new stream.Writable();
+  let resultString = '';
+  w._write = function (chunk, encoding, done) {
+    //console.log('+=+' + chunk.toString());
+    resultString += chunk.toString();
+    done();
+  };
+
+  const option = new Options(null, 'c:/base');
+  const tapToVSError = new TapToVSError(option);
+
+  const teststream = tapToVSError.stream();
+  s.pipe(teststream).pipe(w);
+
+  w.on('finish', function () {
+    //console.log('resultString = ' + resultString);
     t.ok(teststream, 'teststream');
     t.ok(resultString, 'resultString');
     t.end();

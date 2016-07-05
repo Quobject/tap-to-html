@@ -1,6 +1,6 @@
 ﻿/* tslint:disable:no-string-literal */
 import * as through from 'through2';
-
+import * as path from 'path';
 
 export class TapToHtml {
 
@@ -219,9 +219,102 @@ const htmlForm = `
 
 export interface IOptions {
   html?: string;
+  basePath?: string;
 }
 
 export class Options implements IOptions {
   public constructor(
-    public html: string = htmlForm) { }
+    public html: string = htmlForm, public basePath = '') { }
 }
+
+
+export class TapToVSError {
+
+  constructor(private options: IOptions = new Options()) { }
+
+  public stream() {
+
+    let result = [];
+    let options2 = this.options;
+
+    const transform = function (chunk, encoding, callback) {
+      result = result.concat(chunk.toString().split('\n'));
+      callback();
+    };
+
+    const flush = function (callback) {
+
+      let html, line;
+      let content = [];
+      let yamlTitle = '';
+      let title = '';
+      let yaml = [];
+      let inYaml = false;
+
+      const resetYaml = function () {
+        //console.log('title = ', title);
+
+        if (inYaml) {
+          const tsFilePath = title.split('#').reduce((prev, curr) => {
+            if (curr.indexOf('.ts') > 0) {
+              return curr;
+            }
+            return prev;
+          }, '');
+          //console.log('tsFilePath = ', tsFilePath);
+
+          const filePath = path.resolve(options2.basePath, tsFilePath.trim());
+          const msg = [
+            `${filePath}(0,0): error : `,
+            `${yamlTitle} : `,
+            yaml.join(''),
+            ` : ${title}`,
+
+          ];
+          content.push(msg.join(''));
+          title = '';
+        }
+
+        inYaml = false;
+        yaml = [];
+        yamlTitle = '';
+
+      };
+
+      for (let i = 0; i < result.length; i++) {
+        line = result[i];
+
+        html = null;
+        if (line.length === 0) {
+          //do nothing
+        } else if (line.startsWith('ok')) {
+          resetYaml();
+          title = '';
+        } else if (line.startsWith('TAP version')) {
+          resetYaml();
+          title = '';
+        } else if (line.startsWith('#')) {
+          title = title + `${line}`;
+          resetYaml();
+        } else if (line.startsWith('not ok')) {
+          yamlTitle = line;
+          inYaml = true;
+        } else if (inYaml) {
+          yaml.push(line);
+        }
+
+
+      }
+
+      let total =  content.join('\n');
+
+      this.push(total);
+      callback();
+    };
+
+    return through.obj(transform, flush);
+  }
+
+}
+
+
