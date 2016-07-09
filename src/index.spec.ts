@@ -7,10 +7,10 @@ import { TapToHtml, Options, TapToVSError } from './index';
 
 const testString = `
 TAP version 13
-# testling.baseconfig_for_spec.ts
+# @testling.baseconfig_for_spec.ts
 # get value
 ok 1 has key buildtype
-# testling.context.ts
+# @testling.context.ts
 # constructor
 ok 2 cloudconfig
 ok 3 keyspath
@@ -18,9 +18,9 @@ ok 4 workingpath
 ok 60 device
 ok 61 ebsSize
 ok 62 ebsVolumeType
-# testling.core.quhnb_docker.ts
+# @testling.core.quhnb_docker.ts
 # constructor
-# testling.core.vpc_options.ts
+# @testling.core.vpc_options.ts
 # constructor
 ok 63 vpcId
 ok 64 securityGroupId
@@ -34,10 +34,10 @@ ok 64 securityGroupId
 
 const testString2 = `
 TAP version 13
-# quhnbfleetmake/src/baseconfig_for_spec.spec.ts
+# @quhnbfleetmake/src/baseconfig_for_spec.spec.ts
 # get value
 ok 1 has key buildtype
-# quhnbfleetmake/src/context.spec.ts
+# @quhnbfleetmake/src/context.spec.ts
 # constructor
 ok 2 cloudconfig
 ok 3 keyspath
@@ -58,12 +58,18 @@ not ok 12 correct buildtype
 ok 13 should be equal
 ok 14 value.cloudconfig.baseServer
 ok 15 awsAccessKeyId
+not ok 15 awsAccessKeyId
+  ---
+    operator: equal
+    expected: 'xxx'
+    actual:   'yyy'
+  ...
 ok 16 awsSecretAccessId
 ok 17 codestoreKey
 ok 18 codestoreSecret
 ok 19 codestoreBucket
 ok 20 codestoreRegion
-# quhnbfleetmake/src/index.spec.ts
+# @quhnbfleetmake/src/index.spec.ts
 # index
 # helloWorld
 not ok 21 correct return value
@@ -72,7 +78,7 @@ not ok 21 correct return value
     expected: 'quhnbfleetmake Hello Worlda'
     actual:   'quhnbfleetmake Hello World'
   ...
-# quhnbfleetmake/src/configuration/cloudconfig.spec.ts
+# @quhnbfleetmake/src/configuration/cloudconfig.spec.ts
 # constructor
 ok 22 s3CodeQuobjectIoRegion
 ok 23 baseServer
@@ -95,33 +101,33 @@ ok 39 sslTypes
 ok 40 sslTypes[0]
 ok 41 sslServers
 ok 42 sslServers[0]
-# quhnbfleetmake/src/configuration/cloudconfig_region.spec.ts
+# @quhnbfleetmake/src/configuration/cloudconfig_region.spec.ts
 # constructor
 ok 43 id
 ok 44 ami
 ok 45 vpc
 ok 46 zone
-# quhnbfleetmake/src/core/consul_options.spec.ts
+# @quhnbfleetmake/src/core/consul_options.spec.ts
 # constructor
 ok 47 todo
-# quhnbfleetmake/src/core/crlf.spec.ts
+# @quhnbfleetmake/src/core/crlf.spec.ts
 # convert
 ok 48 should convert to LF
-# quhnbfleetmake/src/core/docker_file_info.spec.ts
+# @quhnbfleetmake/src/core/docker_file_info.spec.ts
 # constructor
 ok 49 tag
 ok 50 tar
 ok 51 ebsVolumeType
 ok 52 ebsSize
 ok 53 run
-# quhnbfleetmake/src/core/docker_machine.spec.ts
+# @quhnbfleetmake/src/core/docker_machine.spec.ts
 # getWorkerMachineName
 ok 54 machineName
-# quhnbfleetmake/src/core/docker_machine_options.spec.ts
+# @quhnbfleetmake/src/core/docker_machine_options.spec.ts
 # constructor
 ok 55 machineName
 ok 56 region
-# quhnbfleetmake/src/core/ebs_options.spec.ts
+# @quhnbfleetmake/src/core/ebs_options.spec.ts
 # constructor
 ok 57 machineName
 ok 58 volumeName
@@ -129,7 +135,7 @@ ok 59 region.id
 ok 60 device
 ok 61 ebsSize
 ok 62 ebsVolumeType
-# quhnbfleetmake/src/core/vpc_options.spec.ts
+# @quhnbfleetmake/src/core/vpc_options.spec.ts
 # constructor
 ok 63 vpcId
 ok 64 securityGroupId
@@ -189,30 +195,30 @@ test('tapToHtml', t => {
 
 
 
-test('tapToVSError', t => {
-  const s = new stream.Readable();
-  s.push(testString2);
-  s.push(null);
+//test('tapToVSError', t => {
+//  const s = new stream.Readable();
+//  s.push(testString2);
+//  s.push(null);
 
-  const w = new stream.Writable();
-  let resultString = '';
-  w._write = function (chunk, encoding, done) {
-    //console.log('+=+' + chunk.toString());
-    resultString += chunk.toString();
-    done();
-  };
+//  const w = new stream.Writable();
+//  let resultString = '';
+//  w._write = function (chunk, encoding, done) {
+//    //console.log('+=+' + chunk.toString());
+//    resultString += chunk.toString();
+//    done();
+//  };
 
-  const option = new Options(null, 'c:/base');
-  const tapToVSError = new TapToVSError(option);
+//  const option = new Options(null, 'c:/base');
+//  const tapToVSError = new TapToVSError(option);
 
-  const teststream = tapToVSError.stream();
-  s.pipe(teststream).pipe(w);
+//  const teststream = tapToVSError.stream();
+//  s.pipe(teststream).pipe(w);
 
-  w.on('finish', function () {
-    //console.log('resultString = ' + resultString);
-    t.ok(teststream, 'teststream');
-    t.ok(resultString, 'resultString');
-    t.end();
-  });
-});
+//  w.on('finish', function () {
+//    console.log('resultString = ' + resultString);
+//    t.ok(teststream, 'teststream');
+//    t.ok(resultString, 'resultString');
+//    t.end();
+//  });
+//});
 

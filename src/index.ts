@@ -249,6 +249,8 @@ export class TapToVSError {
 
     const flush = function (callback) {
 
+      //console.log('result = ', result);
+
       let html, line;
       let content = [];
       let yamlTitle = '';
@@ -256,18 +258,20 @@ export class TapToVSError {
       let yaml = [];
       let inYaml = false;
       let outsideTitle = true;
+      let tsFilePath: any = '';
 
       const resetYaml = function () {
         //console.log('title = ', title);
 
         if (inYaml) {
-          const tsFilePath = title.split('#').reduce((prev, curr) => {
-            if (curr.indexOf('.ts') > 0) {
-              return curr;
-            }
-            return prev;
-          }, '');
-          //console.log('tsFilePath = ', tsFilePath);
+
+          if (tsFilePath.startsWith('#@')) {
+            tsFilePath = tsFilePath.substring(2);
+          } else if (tsFilePath.startsWith('# @')) {
+            tsFilePath = tsFilePath.substring(3);
+          }
+
+          console.log('tsFilePath = ', tsFilePath);
 
           const filePath = path.resolve(options2.basePath, tsFilePath.trim());
           const msg = [
@@ -299,6 +303,11 @@ export class TapToVSError {
           resetYaml();
           title = '';
           outsideTitle = true;
+        } else if (line.startsWith('#@') || line.startsWith('# @')) {
+          resetYaml();
+          tsFilePath = line;
+          title = '';
+          outsideTitle = false;
         } else if (line.startsWith('#')) {
           resetYaml();
           if (outsideTitle) {
