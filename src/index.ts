@@ -259,23 +259,40 @@ export class TapToVSError {
       let inYaml = false;
       let outsideTitle = true;
       let tsFilePath: any = '';
+      let tsFileRow = '0';
+      let tsFileColumn = '0';
+      let tsFileMessage = '0';
 
       const resetYaml = function () {
         //console.log('title = ', title);
 
         if (inYaml) {
 
-          if (tsFilePath.startsWith('#@')) {
-            tsFilePath = tsFilePath.substring(2);
-          } else if (tsFilePath.startsWith('# @')) {
-            tsFilePath = tsFilePath.substring(3);
+          if (tsFilePath.startsWith('# @')) {
+            const re = /# @([^\(]*)\((\d*),(\d*)\)\: (.*)/;
+            const str = tsFilePath;
+              //'# @quhnbfleetmake/src/core/consul_options.spec.ts(11,234): message';
+            let m;
+
+            if ((m = re.exec(str)) !== null) {
+              if (m.index === re.lastIndex) {
+                re.lastIndex++;
+              }
+              // View your result using the m-variable.
+              // eg m[0] etc.
+            }
+            tsFilePath = m[1];
+            tsFileRow = m[2];
+            tsFileColumn = m[3];
+            tsFileMessage = m[4];
+
           }
 
           console.log('tsFilePath = ', tsFilePath);
 
           const filePath = path.resolve(options2.basePath, tsFilePath.trim());
           const msg = [
-            `${filePath}(0,0): error : `,
+            `${filePath}(${tsFileRow},${tsFileColumn}): ${tsFileMessage} `,
             `${yamlTitle} : `,
             yaml.join(''),
             ` : ${title}`,
@@ -337,4 +354,31 @@ export class TapToVSError {
 
 }
 
+export class LogFileHeader {
+  constructor(public moduleName: string) {
+  }
 
+  public log(message = ''): string {
+    let stackLine = (new Error).stack.split('\n')[2];
+    //at Test.<anonymous> (core/fm.spec.ts:340:5)
+
+    const re = /\(([^\:]*):(\d*):(\d*)/;
+    const str = stackLine;
+    let m;
+
+    if ((m = re.exec(str)) !== null) {
+      if (m.index === re.lastIndex) {
+        re.lastIndex++;
+      }
+      // View your result using the m-variable.
+      // eg m[0] etc.
+    }
+    const file = m[1];
+    const line = m[2];
+    const column = m[3];
+    const result = `@${this.moduleName}/${file}(${line},${column}) ${message}`;
+    //console.log('result', result);
+    //console.log('stackLine', stackLine);
+    return result;
+  };
+}
