@@ -362,10 +362,10 @@ export class LogFileHeader {
 
   public log(message = ''): string {
     let stackLine = (new Error).stack.split('\n')[2];
-    //at Test.<anonymous> (core/fm.spec.ts:340:5)
-
-    const re = /\(([^\:]*):(\d*):(\d*)/;
     const str = stackLine;
+
+    //at Test.<anonymous> (core/fm.spec.ts:340:5)
+    let re = /\(([^\:]*):(\d*):(\d*)/;
     let m;
 
     if ((m = re.exec(str)) !== null) {
@@ -375,12 +375,42 @@ export class LogFileHeader {
       // View your result using the m-variable.
       // eg m[0] etc.
     }
-    const file = m[1];
-    const line = m[2];
-    const column = m[3];
-    const result = `@${this.moduleName}/${file}(${line},${column}) ${message}`;
-    //console.log('result', result);
-    //console.log('stackLine', stackLine);
-    return result;
+    if (m) {
+      const file = m[1];
+      const line = m[2];
+      const column = m[3];
+      const result = `@${this.moduleName}/${file}(${line},${column}) ${message}`;
+      //console.log('result', result);
+      //console.log('stackLine', stackLine);
+      return result;
+    }
+
+    //   at Object.<anonymous> (C:\Development\quobject.visualstudio.com\quhnb\
+    //node_modules\quhnbfleetmake\dist\baseconfig_for_spec.spec.js:9:20)
+    re = /\(([^\(]*)\:(\d*)\:(\d*)/;
+
+    if ((m = re.exec(str)) !== null) {
+      if (m.index === re.lastIndex) {
+        re.lastIndex++;
+      }
+      // View your result using the m-variable.
+      // eg m[0] etc.
+    }
+    if (m) {
+      const file = m[1];
+      const line = m[2];
+      const column = m[3];
+
+      const baseName = path.basename(file);
+
+
+      const result = `@${this.moduleName}/${baseName}.ts(${line},${column}) ${message}`;
+      //console.log('result', result);
+      //console.log('stackLine', stackLine);
+      return result;
+    }
+
+    return stackLine;
+
   };
 }
