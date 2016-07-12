@@ -281,10 +281,12 @@ export class TapToVSError {
               // View your result using the m-variable.
               // eg m[0] etc.
             }
-            tsFilePath = m[1];
-            tsFileRow = m[2];
-            tsFileColumn = m[3];
-            tsFileMessage = m[4];
+            if (m) {
+              tsFilePath = m[1];
+              tsFileRow = m[2];
+              tsFileColumn = m[3];
+              tsFileMessage = m[4];
+            }
 
           }
 

@@ -1,6 +1,6 @@
 {
   "name": "tap-to-html",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "A Test-Anything-Protocol (tap) stream transformer to html",
   "main": "dist/index.js",
   "typings": "dist/index",
