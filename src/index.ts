@@ -324,7 +324,7 @@ export class TapToVSError {
           outsideTitle = true;
         } else if (line.startsWith('#@') || line.startsWith('# @')) {
           resetYaml();
-          tsFilePath = line;
+          tsFilePath = line.trim();
           title = '';
           outsideTitle = false;
         } else if (line.startsWith('#')) {
