@@ -269,7 +269,7 @@ export class TapToVSError {
         if (inYaml) {
 
           if (tsFilePath.startsWith('# @')) {
-            const re = /# @([^\(]*)\((\d*),(\d*)\)\: (.*)/;
+            const re = /# @([^\(]*)\((\d*),(\d*)\)(.*)/;
             const str = tsFilePath;
               //'# @quhnbfleetmake/src/core/consul_options.spec.ts(11,234): message';
             let m;
