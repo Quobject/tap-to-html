@@ -290,7 +290,7 @@ export class TapToVSError {
 
           }
 
-          console.log('tsFilePath = ', tsFilePath);
+          //console.log('tsFilePath = ', tsFilePath);
 
           const filePath = path.resolve(options2.basePath, tsFilePath.trim());
           const msg = [
