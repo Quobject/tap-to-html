@@ -1,5 +1,7 @@
 ﻿/* tslint:disable:no-string-literal */
 import * as through from 'through2';
+import { Transform } from 'stream'; // https://stackoverflow.com/a/45405931/1109316
+
 import * as path from 'path';
 
 export class TapToHtml {
@@ -11,7 +13,7 @@ export class TapToHtml {
     let result = [];
     let options2 = this.options;
 
-    const transform = function (chunk, encoding, callback) {
+    const transform3 = function (chunk, encoding, callback) {
       result = result.concat(chunk.toString().split('\n'));
       callback();
     };
@@ -128,21 +130,22 @@ export class TapToHtml {
     };
 
     console.log('start TapToHtml stream');
-    return through.obj(transform, flush);
+    return through.obj(transform3, flush);
   }
 
 }
 
 
-
+/* tslint:disable:max-line-length */
 const htmlForm = `
 <!DOCTYPE html>
 <html>
 <head>
     <title>Tap To Html</title>
-    <link rel="stylesheet" href="bootstrap.min.css">
-    <script src="jquery.min.js"></script>
-    <script src="bootstrap.min.js"></script>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
     <style>
         .error {
             background-color: #ff0000;
@@ -174,16 +177,16 @@ const htmlForm = `
         .yaml {
             background-color: #f8dada;
             font-size: 20px;
-        }  
+        }
         .toprow {
             height: 10px;
-        }  
+        }
         .summary {
-            margin: 20px;            
-        }  
+            margin: 20px;
+        }
         span.label {
-             font-size: 20px;             
-        }   
+             font-size: 20px;
+        }
     </style>
     <script>
         $(document).ready(function () {
@@ -199,10 +202,10 @@ const htmlForm = `
         </div>
         <div class="row">
             <div class="col-md-2">
-                <span class="label label-default">Tests @numberTests@</span>  
+                <span class="label label-default">Tests @numberTests@</span>
             </div>
             <div class="col-md-2">
-                <span class="label label-success">Pass @numberPass@</span>                        
+                <span class="label label-success">Pass @numberPass@</span>
             </div>
             <div class="col-md-2">
                 <span class="label label-danger">Fail @numberFail@</span>
@@ -412,5 +415,5 @@ export class LogFileHeader {
 
     return stackLine;
 
-  };
+  }
 }
